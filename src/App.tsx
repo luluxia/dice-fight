@@ -1,33 +1,36 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { motion, AnimatePresence } from 'framer-motion'
+import { useStore } from './store'
+import Index from './views/Index'
+import Prepare from './views/Prepare'
+import Game from './views/Game'
+
+const pages: {
+  [key: string]: React.FC
+} = {
+  index: Index,
+  prepare: Prepare,
+  game: Game,
+}
 
 function App() {
-  const [count, setCount] = useState(0)
+  const { page, pageKey } = useStore()
+  const ComponentToRender = pages[page]
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      {/* 背景 */}
+      <div className="pattern-cross-dots-lg bg-sky-400 text-white/15 fixed w-screen h-screen -z-1"></div>
+      <AnimatePresence initial={false}>
+        <motion.div
+          key={pageKey}
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0 }}
+          className='absolute w-full h-full'
+        >
+          <ComponentToRender />
+        </motion.div>
+      </AnimatePresence>
     </>
   )
 }
