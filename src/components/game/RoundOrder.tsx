@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import { useGameStore } from '../../store'
 
 function RoundOrder() {
-  const { changeTitle, set } = useGameStore()
+  const { changeTitle, set, changeRound } = useGameStore()
 
   const diceArea = useRef<HTMLDivElement>(null)
 
@@ -46,11 +46,13 @@ function RoundOrder() {
       if (state.opponent.point && state.player.point) {
         if (state.opponent.point > state.player.point) {
           changeTitle('对方先手')
+          changeRound('opponent')
           setTimeout(() => {
             set('status', 'ban-pick')
           }, 1000)
         } else if (state.opponent.point < state.player.point) {
           changeTitle('我方先手')
+          changeRound('player')
           setTimeout(() => {
             set('status', 'ban-pick')
           }, 1000)

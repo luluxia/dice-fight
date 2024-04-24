@@ -1,10 +1,11 @@
-
 import { useStore } from '../store'
 import Tippy from '@tippyjs/react'
 import { hideAll } from 'tippy.js'
 import classNames from 'classnames'
 import { motion, AnimatePresence } from 'framer-motion'
 import { chars } from '../data'
+
+import ActionDice from '../components/dice/ActionDice'
 
 function Prepare() {
   const { charList, setCharList, removeCharList, changePage } = useStore()
@@ -104,20 +105,7 @@ function Prepare() {
                           appendTo='parent'
                           key={index}
                         >
-                          <div className={`relative w-15 h-15 rounded flex ${action.background}`}>
-                            <img
-                              className='w-full h-full rounded image-render-pixel p-2 opacity-25'
-                              src={`./img/char/${char.pic}.png`} alt=""
-                            />
-                            {
-                              action.pic &&
-                              <img className='absolute p-2' src={`/img/action/${action.pic}.png`} alt="" />
-                            }
-                            {
-                              action.value &&
-                              <span className='absolute text-2xl font-bold text-white text-shadow bottom-0 right-1.5'>{action.value}</span>
-                            }
-                          </div>
+                          <ActionDice char={char} action={index} />
                         </Tippy>
                       ))
                     }

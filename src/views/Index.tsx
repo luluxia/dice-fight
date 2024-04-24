@@ -1,11 +1,11 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import classNames from 'classnames'
 import { useStore } from '../store'
 
 function Index() {
   const [menu, setMenu] = useState('index')
-  const { changePage } = useStore()
+  const { changePage, loadCharList } = useStore()
 
   const menuList: {
     [key: string]: {
@@ -44,6 +44,10 @@ function Index() {
     visible: { opacity: 1, y: 0 },
     hidden: { opacity: 0, y: -50 },
   }
+
+  useEffect(() => {
+    loadCharList()
+  }, [])
 
   return (
     <div className="relative flex max-w-screen-sm h-full m-auto">
