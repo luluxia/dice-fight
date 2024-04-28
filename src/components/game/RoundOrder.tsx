@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { RPC } from 'playroomkit'
 import { motion, AnimatePresence } from 'framer-motion'
 import classNames from 'classnames'
 import { useGameStore } from '../../store'
@@ -23,8 +24,9 @@ function RoundOrder() {
       rotate: 0
     }
   })
-  
-  const handleThrow = (type: 'opponent' | 'player') => {
+
+  // 玩家投掷骰子
+  const handlePlayerThrow = () => {
     const key = new Date().getTime()
     const point = Math.floor(Math.random() * 6) + 1
     const rect = diceArea.current?.getBoundingClientRect()
@@ -34,13 +36,38 @@ function RoundOrder() {
     y = Math.random() > 0.5 ? y : -y
     const position = [x, y]
     const rotate = Math.floor(Math.random() * 360)
-    setState({
+    setState(state => ({
       ...state,
       throwEnable: false,
-      [type]: { key, point, position, rotate }
-    })
+      player: { key, point, position, rotate }
+    }))
+    RPC.call('throwDice', point, RPC.Mode.OTHERS)
   }
 
+  // 对手投掷骰子
+  const handleOpponentThrow = (point: number) => {
+    const key = new Date().getTime()
+    const rect = diceArea.current?.getBoundingClientRect()
+    let x = rect?.width ? Math.floor(Math.random() * rect.width / 2 - 50) : 0
+    let y = rect?.height ? Math.floor(Math.random() * rect.height / 2 - 50) : 0
+    x = Math.random() > 0.5 ? x : -x
+    y = Math.random() > 0.5 ? y : -y
+    const position = [x, y]
+    const rotate = Math.floor(Math.random() * 360)
+    setState(state => ({
+      ...state,
+      opponent: { key, point, position, rotate }
+    }))
+  }
+
+  // 监听对手投掷骰子
+  useEffect(() => {
+    RPC.register('throwDice', async (point: number) => {
+      handleOpponentThrow(point)
+    })
+  }, [])
+
+  // 判断先后手
   useEffect(() => {
     setTimeout(() => {
       if (state.opponent.point && state.player.point) {
@@ -70,7 +97,7 @@ function RoundOrder() {
 
   return (
     <div className='w-full h-full flex flex-col space-y-2'>
-      <p onClick={() => handleThrow('opponent')} className="text-center font-bold text-sky-400">准备阶段</p>
+      <p className="text-center font-bold text-sky-400">准备阶段</p>
       <div className="flex flex-1 border-3 border-dashed border-sky-200 rounded-xl">
         <div className="flex flex-1 justify-center items-center">
           <AnimatePresence>
@@ -116,7 +143,7 @@ function RoundOrder() {
       </div>
       <div className="relative flex justify-center space-x-2">
         <div
-          onClick={() => handleThrow('player')}
+          onClick={() => handlePlayerThrow()}
           className={classNames(
             'flex-1 text-center bg-sky-400 py-2 rounded-3xl text-white text-shadow-sm shadow-sm cursor-pointer transition-colors hover:bg-sky-500',
             { 'opacity-50 cursor-not-allowed pointer-events-none': !state.throwEnable }

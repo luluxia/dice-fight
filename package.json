@@ -15,8 +15,10 @@
     "classnames": "^2.5.1",
     "framer-motion": "^10.12.2",
     "pattern.css": "^1.0.0",
+    "playroomkit": "^0.0.74",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hot-toast": "^2.4.1",
     "tippy.js": "^6.3.7",
     "unocss": "^0.59.3",
     "zustand": "^4.5.2"

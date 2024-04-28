@@ -1,5 +1,6 @@
-import { useGameStore } from './../store'
+import { usePlayersList, me } from 'playroomkit'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useGameStore } from './../store'
 import RoundOrder from '../components/game/RoundOrder'
 import BanPick from '../components/game/BanPick'
 import Round from '../components/game/Round'
@@ -14,6 +15,11 @@ const components: {
 
 function Game() {
   const { status, title, changeTitle, set } = useGameStore()
+
+  const players = usePlayersList()
+  const player = players.find(p => p.id === me().id)
+  const opponent = players.find(p => p.id !== me().id)
+
   const ComponentToRender = components[status]
   
   return (
@@ -52,7 +58,7 @@ function Game() {
       <div className='px-10 flex items-center space-x-2'>
         <div className='w-15 h-15 bg-white rounded-full shadow-sm border-2 border-white'></div>
         <div className='flex-1 space-y-1 text-center'>
-          <p className="text-white text-shadow-sm">简单的敌人</p>
+          <p className="text-white text-shadow-sm">{ opponent?.id }</p>
           <div className='bg-teal-300 rounded-xl border-white border-2 text-sm p-0.5 shadow-sm'>
             <p className="text-white text-shadow-sm">50 / 50</p>
           </div>
@@ -78,7 +84,7 @@ function Game() {
       <div className='px-10 flex items-center space-x-2'>
         <div className='w-15 h-15 bg-white rounded-full shadow-sm border-2 border-white'></div>
         <div className='flex-1 space-y-1 text-center'>
-          <p className="text-white text-shadow-sm">简单的敌人</p>
+          <p className="text-white text-shadow-sm">{ player?.id }</p>
           <div className='bg-teal-300 rounded-xl border-white border-2 text-sm p-0.5 shadow-sm'>
             <p className="text-white text-shadow-sm">50 / 50</p>
           </div>

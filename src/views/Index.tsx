@@ -23,7 +23,7 @@ function Index() {
       { text: '关于', color: 'sky', size: 1 },
     ],
     'multiplayer': [
-      { text: '创建房间', color: 'rose', size: 2, action: () => changePage('game') },
+      { text: '创建房间', color: 'rose', size: 2, action: () => changePage('room') },
       { text: '返回', color: 'sky', size: 2, action: () => setMenu('index') },
     ],
   }
@@ -47,6 +47,9 @@ function Index() {
 
   useEffect(() => {
     loadCharList()
+    if (document.location.hash.startsWith('#r=')) {
+      changePage('room')
+    }
   }, [])
 
   return (
@@ -60,7 +63,7 @@ function Index() {
       {/* 菜单 */}
       <AnimatePresence initial={false}>
         <motion.div
-          key={Math.random()}
+          key={menu}
           initial="hidden"
           animate="visible"
           exit={{ opacity: 0 }}
