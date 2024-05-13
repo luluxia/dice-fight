@@ -33,7 +33,10 @@ function Result() {
         >回到房间</Button>
         <Button
           color="rose"
-          onClick={() => window.location.assign('/')}
+          onClick={() => {
+            window.location.hash = ''
+            window.location.reload()
+          }}
         >退出房间</Button>
       </div>
     </div>

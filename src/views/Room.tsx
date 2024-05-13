@@ -149,7 +149,8 @@ function Room() {
                     {!player.ready ? '准备' : '取消准备'}
                   </Button>
                   <Button color="rose" onClick={() => {
-                    window.location.assign('/')
+                    window.location.hash = ''
+                    window.location.reload()
                   }}>退出房间</Button>
                 </div>
               </motion.div>

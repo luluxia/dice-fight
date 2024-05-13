@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { useGameStore, usePlayerStore, useOpponentStore } from '../store'
 import RoundOrder from '../components/game/RoundOrder'
-import BanPick from '../components/game/BanPick'
+// import BanPick from '../components/game/BanPick'
 import Round from '../components/game/Round'
 import Result from '../components/game/Result'
 
@@ -9,7 +9,7 @@ const components: {
   [key: string]: React.FC
 } = {
   'round-order': RoundOrder,
-  'ban-pick': BanPick,
+  // 'ban-pick': BanPick,
   'round': Round,
   'result': Result,
 }
@@ -77,7 +77,7 @@ function Game() {
                     exit={{ opacity: 0 }}
                     className='absolute w-12 -bottom-2 -right-4 flex justify-center items-center'
                   >
-                    <img className='drop-shadow' src="img/action/shield.png" alt="" />
+                    <img className='drop-shadow' src="./img/action/shield.png" alt="" />
                     <p className='absolute font-bold text-sky-400'>{opponent.shield}</p>
                   </motion.div>
                 }
@@ -127,7 +127,7 @@ function Game() {
                     exit={{ opacity: 0 }}
                     className='absolute w-12 -bottom-2 -right-4 flex justify-center items-center'
                   >
-                    <img className='drop-shadow' src="img/action/shield.png" alt="" />
+                    <img className='drop-shadow' src="./img/action/shield.png" alt="" />
                     <p className='absolute font-bold text-sky-400'>{player.shield}</p>
                   </motion.div>
                 }

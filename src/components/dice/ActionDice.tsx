@@ -8,7 +8,7 @@ const ActionDice = forwardRef((props: any, ref: any) => (
     />
     {
       props.char.actions[props.action].pic &&
-      <img className='absolute p-2' src={`/img/action/${props.char.actions[props.action].pic}.png`} alt="" />
+      <img className='absolute p-2' src={`./img/action/${props.char.actions[props.action].pic}.png`} alt="" />
     }
     {
       props.char.actions[props.action].value &&
