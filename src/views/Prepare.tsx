@@ -20,7 +20,7 @@ function Prepare() {
         <div className="relative flex border-3 border-dashed border-sky-200 rounded-xl p-3">
           <p className="absolute -top-3 left-4 bg-white text-sky-400 px-1 text-sm">队伍</p>
           <div className="flex flex-1 flex-col justify-center items-center space-y-4">
-            <div className="grid grid-cols-6 gap-2 <sm:grid-cols-3">
+            <div className="grid grid-cols-3 gap-2">
               {
                 charList.map((id, index) => (
                   <div key={index} className='w-15 h-15'>
@@ -53,7 +53,7 @@ function Prepare() {
           </div>
         </div>
         {/* 说明 */}
-        <p className="text-center text-sky-400">选取 6 名角色加入队伍</p>
+        <p className="text-center text-sky-400">选取 3 名角色加入队伍</p>
         {/* 角色 */}
         <div className="relative flex flex-1 min-h-0 border-3 border-dashed border-sky-200 rounded-xl py-3">
           <p className="absolute -top-3 left-4 bg-white text-sky-400 px-1 text-sm">角色</p>

@@ -1,29 +1,25 @@
-import { useEffect, useRef, useState } from 'react'
-import { RPC } from 'playroomkit'
+import { useEffect, useRef } from 'react'
+import { RPC } from '../../tools'
 import { motion, AnimatePresence } from 'framer-motion'
 import classNames from 'classnames'
-import { useGameStore } from '../../store'
+import { useGameStore, usePlayerStore, useOpponentStore, useRoundOrderStore } from '../../store'
 
 function RoundOrder() {
-  const { changeTitle, set, changeRound } = useGameStore()
-
+  const state = useRoundOrderStore()
+  const { changeTitle, changeStatus, changeCurrentPlayer } = useGameStore()
+  const player = usePlayerStore()
+  const opponent = useOpponentStore()
   const diceArea = useRef<HTMLDivElement>(null)
 
-  const [state, setState] = useState({
-    throwEnable: true,
-    opponent: {
-      key: 0,
-      point: 0,
-      position: [0, 0],
-      rotate: 0
-    },
-    player: {
-      key: 0,
-      point: 0,
-      position: [0, 0],
-      rotate: 0
-    }
-  })
+  // 监听对手投掷骰子
+  useEffect(() => {
+    RPC.register('throwDice', async (point: number) => {
+      handleOpponentThrow(point)
+    })
+    player.reset()
+    opponent.reset()
+    state.reset()
+  }, [])
 
   // 玩家投掷骰子
   const handlePlayerThrow = () => {
@@ -36,11 +32,8 @@ function RoundOrder() {
     y = Math.random() > 0.5 ? y : -y
     const position = [x, y]
     const rotate = Math.floor(Math.random() * 360)
-    setState(state => ({
-      ...state,
-      throwEnable: false,
-      player: { key, point, position, rotate }
-    }))
+    state.setThrowEnable(false)
+    state.updatePlayer({ key, point, position, rotate })
     RPC.call('throwDice', point, RPC.Mode.OTHERS)
   }
 
@@ -54,18 +47,8 @@ function RoundOrder() {
     y = Math.random() > 0.5 ? y : -y
     const position = [x, y]
     const rotate = Math.floor(Math.random() * 360)
-    setState(state => ({
-      ...state,
-      opponent: { key, point, position, rotate }
-    }))
+    state.updateOpponent({ key, point, position, rotate })
   }
-
-  // 监听对手投掷骰子
-  useEffect(() => {
-    RPC.register('throwDice', async (point: number) => {
-      handleOpponentThrow(point)
-    })
-  }, [])
 
   // 判断先后手
   useEffect(() => {
@@ -73,23 +56,25 @@ function RoundOrder() {
       if (state.opponent.point && state.player.point) {
         if (state.opponent.point > state.player.point) {
           changeTitle('对方先手')
-          changeRound('opponent')
+          changeCurrentPlayer(opponent.id)
           setTimeout(() => {
-            set('status', 'ban-pick')
+            changeStatus('round')
+            setTimeout(() => {
+              state.reset()
+            }, 500)
           }, 1000)
         } else if (state.opponent.point < state.player.point) {
           changeTitle('我方先手')
-          changeRound('player')
+          changeCurrentPlayer(player.id)
           setTimeout(() => {
-            set('status', 'ban-pick')
+            changeStatus('round')
+            setTimeout(() => {
+              state.reset()
+            }, 500)
           }, 1000)
         } else {
           changeTitle('平局')
-          setState({
-            opponent: { key: 0, point: 0, position: [0, 0], rotate: 0 },
-            player: { key: 0, point: 0, position: [0, 0], rotate: 0 },
-            throwEnable: true
-          })
+          state.reset()
         }
       }
     }, 500)

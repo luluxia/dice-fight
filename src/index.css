@@ -16,3 +16,7 @@
   pointer-events: none;
   top: 0;
 }
+
+img {
+  pointer-events: none;
+}

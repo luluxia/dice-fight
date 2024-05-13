@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import classNames from 'classnames'
+import toast from 'react-hot-toast'
 import { useStore } from '../store'
 
 function Index() {
   const [menu, setMenu] = useState('index')
-  const { changePage, loadCharList } = useStore()
+  const { changePage, charList, loadCharList } = useStore()
 
   const menuList: {
     [key: string]: {
@@ -16,11 +17,19 @@ function Index() {
     }[]
   } = {
     'index': [
-      { text: '单人游戏', color: 'rose', size: 2 },
-      { text: '多人游戏', color: 'orange', size: 2, action: () => setMenu('multiplayer') },
+      { text: '单人游戏', color: 'rose', size: 2, action: () => toast.error('暂未开放') },
+      {
+        text: '多人游戏', color: 'orange', size: 2, action: () => {
+          if (charList.includes(-1)) {
+            toast.error('完成备战后才能进行多人游戏')
+            return
+          }
+          setMenu('multiplayer')
+        }
+      },
       { text: '备战', color: 'lime', size: 2, action: () => changePage('prepare') },
-      { text: '设置', color: 'sky', size: 1 },
-      { text: '关于', color: 'sky', size: 1 },
+      { text: '设置', color: 'sky', size: 1, action: () => toast.error('暂未开放') },
+      { text: '关于', color: 'sky', size: 1, action: () => toast.error('暂未开放') },
     ],
     'multiplayer': [
       { text: '创建房间', color: 'rose', size: 2, action: () => changePage('room') },

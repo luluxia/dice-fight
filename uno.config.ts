@@ -5,6 +5,7 @@ import transformerDirectives from '@unocss/transformer-directives'
 const defineColorSafelist = (color: string[]) => {
   return color.map(c => [
     `!bg-${c}-200`,
+    `hover:bg-${c}-300`,
     `bg-${c}-400`,
     `bg-${c}-500`,
     `text-${c}-500`,

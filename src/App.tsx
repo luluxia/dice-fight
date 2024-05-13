@@ -26,7 +26,7 @@ function App() {
       {/* 提示 */}
       <Toaster />
       {/* 页面 */}
-      <AnimatePresence initial={false}>
+      <AnimatePresence>
         <motion.div
           key={pageKey}
           initial={{ opacity: 0, y: -50 }}

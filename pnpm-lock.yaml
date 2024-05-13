@@ -18,8 +18,8 @@ importers:
         specifier: ^2.5.1
         version: 2.5.1
       framer-motion:
-        specifier: ^10.12.2
-        version: 10.12.2(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        specifier: ^11.1.9
+        version: 11.1.9(@emotion/is-prop-valid@0.8.8)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       pattern.css:
         specifier: ^1.0.0
         version: 1.0.0
@@ -63,6 +63,12 @@ importers:
       '@typescript-eslint/parser':
         specifier: ^7.7.0
         version: 7.7.0(eslint@8.57.0)(typescript@5.4.5)
+      '@unocss/transformer-directives':
+        specifier: ^0.60.0
+        version: 0.60.0
+      '@unocss/transformer-variant-group':
+        specifier: ^0.60.0
+        version: 0.60.0
       '@vitejs/plugin-react':
         specifier: ^4.2.1
         version: 4.2.1(vite@5.2.9(@types/node@20.12.7))
@@ -819,6 +825,9 @@ packages:
   '@unocss/core@0.59.3':
     resolution: {integrity: sha512-G9+1pmQB65KnGj2tvshcMGYs1aqiaw9FWb8cxMRLvQyquuOU/JdULD9vuuchXQ+DLYPTZ4vgDmMJefBJT6JDVw==}
 
+  '@unocss/core@0.60.0':
+    resolution: {integrity: sha512-i1j5i/4xiCfogobaOdQCQUEy/Ch8mBtKgpfUIreJtElaF15uIjT2t/G0y7qUz87ZNl+wJoPcWkcSC92HVnjXwg==}
+
   '@unocss/extractor-arbitrary-variants@0.59.3':
     resolution: {integrity: sha512-f0G6bhgqCIIx7KjfhOVpJvJF0fpAhfai3fRYgEcxRrDrf5kpK+CqYxphqBqphBzugiY3YOrYlx7ccPIdypsXQw==}
 
@@ -862,6 +871,10 @@ packages:
     resolution: {integrity: sha512-8FxGnnjvhYvit0L2wqIGOMSYBHKLoivpbwClgRSWTEpoxeJxgbULZO36VJ84Qe4rXtdUF7ZPB76k6SWLycsoLA==}
     engines: {node: '>=14'}
 
+  '@unocss/rule-utils@0.60.0':
+    resolution: {integrity: sha512-YDXSUQceqMSVG51F5yTTPSadrV7YrbRX3VnaSE5NopyyYKRWT6/0dl68riTOjtJfVcm55vl7ZhwNFobAdtOfYA==}
+    engines: {node: '>=14'}
+
   '@unocss/scope@0.59.3':
     resolution: {integrity: sha512-YHEtKLsgSNKzES8yiqef9qFJU1sXEGEUPKyw/Jt9WNIhNyDHJuJsPNhlkR6I3VTViu7jFknbK2dnLLHkp+LdNQ==}
 
@@ -877,8 +890,14 @@ packages:
   '@unocss/transformer-directives@0.59.3':
     resolution: {integrity: sha512-Bu2uK4+CIFurOYrFl/Gw03p075d3ATVmLrbM8sBDNfOYfiVWrrizO9J1HfN9/Yu9l3KVPXRfqxOvOWBBl3Jjbg==}
 
+  '@unocss/transformer-directives@0.60.0':
+    resolution: {integrity: sha512-ZG+TvpvimH5LkFkqz27BQryhF8oeM+mUkD9oV+DhtQBadV5pcMvi40NB5VEeDj3dsogHTMrl13dsHXdrINI7jQ==}
+
   '@unocss/transformer-variant-group@0.59.3':
     resolution: {integrity: sha512-n0AIY8GFpAxi/xd0RG49xKzRajZaiAmvD0b6WPOoEsB6dLJF7m97G4yhlmvyM7S26LUdqdtbLuE+XajiRDMyoQ==}
+
+  '@unocss/transformer-variant-group@0.60.0':
+    resolution: {integrity: sha512-00PikfUfJN+LdTaoILA+iXbPB5J8/zX1RcJx1DwKF2iRfKNmSu9+jsyNN0zyQX2jOVXY4UuK3x8LJ1qtZl1edA==}
 
   '@unocss/vite@0.59.3':
     resolution: {integrity: sha512-+K4kSEt3BvJfYlc8Tg3nmF53i14+OUTIasnzwUQF4JCF+B47jd47IVbNBm2izhTA5OrmZ+1xXBjHR7cXgDjDhg==}
@@ -1241,12 +1260,15 @@ packages:
   flatted@3.3.1:
     resolution: {integrity: sha512-X8cqMLLie7KsNUDSdzeN8FYK9rEt4Dt67OsG/DNGnYTSDBG4uFAJFBnUeiV+zCVAvwFy56IjM9sH51jVaEhNxw==}
 
-  framer-motion@10.12.2:
-    resolution: {integrity: sha512-DD3Ieqy4pjmL0qBtfNMqnU/IONchUqnhHtgFtu0Nq5jw7bhkksD/Cs4cNhLYd1vs7iB8Q+WInxuBeMmzIoA5Xg==}
+  framer-motion@11.1.9:
+    resolution: {integrity: sha512-flECDIPV4QDNcOrDafVFiIazp8X01HFpzc01eDKJsdNH/wrATcYydJSH9JbPWMS8UD5lZlw+J1sK8LG2kICgqw==}
     peerDependencies:
+      '@emotion/is-prop-valid': '*'
       react: ^18.0.0
       react-dom: ^18.0.0
     peerDependenciesMeta:
+      '@emotion/is-prop-valid':
+        optional: true
       react:
         optional: true
       react-dom:
@@ -2732,6 +2754,8 @@ snapshots:
 
   '@unocss/core@0.59.3': {}
 
+  '@unocss/core@0.60.0': {}
+
   '@unocss/extractor-arbitrary-variants@0.59.3':
     dependencies:
       '@unocss/core': 0.59.3
@@ -2805,6 +2829,11 @@ snapshots:
       '@unocss/core': 0.59.3
       magic-string: 0.30.10
 
+  '@unocss/rule-utils@0.60.0':
+    dependencies:
+      '@unocss/core': 0.60.0
+      magic-string: 0.30.10
+
   '@unocss/scope@0.59.3': {}
 
   '@unocss/transformer-attributify-jsx-babel@0.59.3':
@@ -2830,9 +2859,19 @@ snapshots:
       '@unocss/rule-utils': 0.59.3
       css-tree: 2.3.1
 
+  '@unocss/transformer-directives@0.60.0':
+    dependencies:
+      '@unocss/core': 0.60.0
+      '@unocss/rule-utils': 0.60.0
+      css-tree: 2.3.1
+
   '@unocss/transformer-variant-group@0.59.3':
     dependencies:
       '@unocss/core': 0.59.3
+
+  '@unocss/transformer-variant-group@0.60.0':
+    dependencies:
+      '@unocss/core': 0.60.0
 
   '@unocss/vite@0.59.3(rollup@4.14.3)(vite@5.2.9(@types/node@20.12.7))':
     dependencies:
@@ -3272,7 +3311,7 @@ snapshots:
 
   flatted@3.3.1: {}
 
-  framer-motion@10.12.2(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
+  framer-motion@11.1.9(@emotion/is-prop-valid@0.8.8)(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
     dependencies:
       tslib: 2.6.2
     optionalDependencies:
