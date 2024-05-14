@@ -29,7 +29,7 @@ function Index() {
       },
       { text: '备战', color: 'lime', size: 2, action: () => changePage('prepare') },
       { text: '设置', color: 'sky', size: 1, action: () => toast.error('暂未开放') },
-      { text: '关于', color: 'sky', size: 1, action: () => toast.error('暂未开放') },
+      { text: '帮助', color: 'sky', size: 1, action: () => toast.error('暂未开放') },
     ],
     'multiplayer': [
       { text: '创建房间', color: 'rose', size: 2, action: () => changePage('room') },
@@ -62,12 +62,14 @@ function Index() {
   }, [])
 
   return (
-    <div className="relative flex max-w-screen-sm h-full m-auto">
-      <div className="flex m-auto">
-        <div className="m-auto text-white font-bold text-6xl text-shadow-xl">
-          <p>代号：</p>
-          <p>骰子大对决</p>
-        </div>
+    <div className="relative max-w-screen-sm h-full m-auto">
+      <div className="flex flex-col justify-center items-center w-full h-[calc(100%-10rem)] space-y-2">
+        <motion.img
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          className='w-80 drop-shadow-2xl'
+          src="./img/logo.svg" alt=""
+        />
       </div>
       {/* 菜单 */}
       <AnimatePresence initial={false}>
@@ -75,9 +77,9 @@ function Index() {
           key={menu}
           initial="hidden"
           animate="visible"
-          exit={{ opacity: 0 }}
+          // exit={{ opacity: 0 }}
           variants={listVariants}
-          className="grid grid-cols-4 gap-2 absolute w-full p-5 bottom-0"
+          className="grid grid-cols-4 gap-2 absolute w-full p-5 pb-10 bottom-0"
         >
           {
             menuList[menu].map((item, index) => (
@@ -104,6 +106,7 @@ function Index() {
           }
         </motion.div>
       </AnimatePresence>
+      <p className='absolute w-full text-center py-2.5 text-sm text-white bottom-0'>© 2024 陆陆侠. v0.1.0</p>
     </div>
   )
 }

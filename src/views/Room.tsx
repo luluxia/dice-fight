@@ -5,9 +5,10 @@ import { motion, AnimatePresence } from 'framer-motion'
 import toast from 'react-hot-toast'
 import { useStore, useGameStore, usePlayerStore, useOpponentStore } from '../store'
 import Button from '../components/Button'
+import classNames from 'classnames'
 
 function Room() {
-  const [ loading, setLoading ] = useState(true)
+  const [loading, setLoading] = useState(true)
   const { charList, changePage } = useStore()
   const { changeStatus } = useGameStore()
 
@@ -15,6 +16,7 @@ function Room() {
   const opponent = useOpponentStore()
 
   useEffect(() => {
+    player.set('nick', localStorage.getItem('nick') || '')
     if (charList.includes(-1)) {
       toast.error('完成备战后才能进行多人游戏')
       document.location.hash = ''
@@ -32,7 +34,7 @@ function Room() {
       onPlayerJoin((playerState) => {
         const player = usePlayerStore.getState()
         const opponent = useOpponentStore.getState()
-        RPC.call('setPlayer', { id: me().id, charList, ready: player.ready }, RPC.Mode.OTHERS)
+        RPC.call('setPlayer', { id: me().id, nick: player.nick, charList, ready: player.ready }, RPC.Mode.OTHERS)
         // 对手退出时重回房间并重置游戏状态
         if (playerState.id !== me().id) {
           playerState.onQuit(() => {
@@ -76,7 +78,7 @@ function Room() {
       setLoading(false)
     }
   }, [player.id])
-  
+
   // 双方准备完毕，开始游戏
   useEffect(() => {
     if (player.ready && opponent.ready) {
@@ -105,9 +107,21 @@ function Room() {
                 <div className="relative flex border-3 border-dashed border-sky-200 rounded-xl p-3 flex-1">
                   {
                     opponent.id ?
-                      <div className='m-auto flex flex-col justify-center items-center'>
-                        <p>{opponent.id}</p>
-                        <p>{opponent.ready ? '已准备' : '未准备'}</p>
+                      <div className='m-auto flex flex-col justify-center items-center space-y-3'>
+                        <div
+                          className='w-20 h-20 rounded-full border-2 border-sky-300 p-1 pattern-diagonal-stripes-sm !bg-sky-100 text-sky-200'
+                        >
+                          <img src="./img/avatar/0.png" alt="" />
+                        </div>
+                        <p className='text-sky-400 font-bold'>{opponent.nick}</p>
+                        <p className={
+                          classNames(
+                            'px-3 py-1 rounded-2xl text-white text-sm text-shadow-sm transition-colors',
+                            opponent.ready ? 'bg-sky-400' : 'bg-gray-400'
+                          )
+                        }>
+                          {opponent.ready ? '已准备' : '未准备'}
+                        </p>
                       </div> :
                       <p className='m-auto'>等待对手加入房间</p>
                   }
@@ -117,9 +131,30 @@ function Room() {
                 <div className="relative flex border-3 border-dashed border-sky-200 rounded-xl p-3 flex-1">
                   {
                     player.id ?
-                      <div className='m-auto flex flex-col justify-center items-center'>
-                        <p>{player.id}</p>
-                        <p>{player.ready ? '已准备' : '未准备'}</p>
+                      <div className='m-auto flex flex-col justify-center items-center space-y-3'>
+                        <div
+                          className='w-20 h-20 rounded-full border-2 border-sky-300 p-1 pattern-diagonal-stripes-sm !bg-sky-100 text-sky-200'
+                        >
+                          <img src="./img/avatar/0.png" alt="" />
+                        </div>
+                        <input
+                          className='text-sky-400 font-bold text-center bg-sky-100 border-2 border-sky-200 p-1 rounded-2xl w-40 outline-none'
+                          type="text" value={player.nick}
+                          maxLength={10}
+                          onChange={e => {
+                            player.set('nick', e.target.value)
+                            RPC.call('setPlayer', { nick: e.target.value }, RPC.Mode.OTHERS)
+                            localStorage.setItem('nick', e.target.value)
+                          }}
+                        />
+                        <p className={
+                          classNames(
+                            'px-3 py-1 rounded-2xl text-white text-sm text-shadow-sm transition-colors',
+                            player.ready ? 'bg-sky-400' : 'bg-gray-400'
+                          )
+                        }>
+                          {player.ready ? '已准备' : '未准备'}
+                        </p>
                       </div> :
                       <p className='m-auto'>加载中</p>
                   }

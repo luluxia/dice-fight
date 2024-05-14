@@ -192,7 +192,7 @@ function Round() {
                 key={dice.index}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
+                exit={{ opacity: 0, pointerEvents: 'none' }}
                 className='m-0.5 cursor-pointer'
                 layout
                 onClick={() => {
@@ -273,7 +273,7 @@ function Round() {
                         rotate: state.dices[index].rotate
                       }}
                       animate={{ opacity: 1, scale: 1, transition: { delay: state.activeDelay ? 0.05 * index : 0 } }}
-                      exit={{ opacity: 0 }}
+                      exit={{ opacity: 0, pointerEvents: 'none' }}
                       className='absolute w-15 h-15 shadow cursor-pointer'
                       style={{
                         transform: `translate(${state.dices[index].position[0]}px, ${state.dices[index].position[1]}px) rotate(${state.dices[index].rotate}deg`

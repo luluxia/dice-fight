@@ -103,7 +103,9 @@ function Game() {
         </div>
         {/* 我方信息 */}
         <div className='px-10 flex justify-center items-center space-x-2'>
-          <div className='w-15 h-15 bg-white rounded-full shadow-sm border-2 border-white'></div>
+          <div className='w-15 h-15 rounded-full shadow-sm border-2 border-white bg-white/50 overflow-hidden'>
+            <img src="./img/avatar/0.png" alt="" />
+          </div>
           <div className='flex-1 space-y-1 text-center'>
             <p className="text-white text-shadow-sm">{player.id}</p>
             <div className='relative h-6 bg-white/20 rounded-xl border-white border-2 text-sm shadow-sm flex justify-center'>
