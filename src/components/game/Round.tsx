@@ -1,7 +1,7 @@
 import { useRef, useEffect } from 'react'
 import Tippy from '@tippyjs/react'
 import { hideAll } from 'tippy.js'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, LayoutGroup } from 'framer-motion'
 import { RPC } from '../../tools'
 import { useGameStore, usePlayerStore, useOpponentStore, useRoundStore } from '../../store'
 import ActionDice from '../../components/dice/ActionDice'
@@ -13,6 +13,7 @@ function Round() {
   const { currentPlayer, changeCurrentPlayer, changeTitle, changeStatus } = useGameStore()
   const player = usePlayerStore()
   const opponent = useOpponentStore()
+  const actionArea = useRef<HTMLDivElement>(null)
   const diceArea = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -82,6 +83,22 @@ function Round() {
     } else {
       state.setAction(null)
     }
+    const offsetList = state.offsetList
+    state.dices.map(dice => {
+      const diceIndex = dice.index
+      if (dice.selected) {
+        const diceDom = document.querySelector(`[data-dice="${diceIndex}"]`) as HTMLElement
+        const diceRect = diceDom.getBoundingClientRect()
+        const diceAreaDom = document.querySelector(`[data-dice-area="${diceIndex}"]`) as HTMLElement
+        const diceAreaRect = diceAreaDom.getBoundingClientRect()
+        offsetList[diceIndex][0] += diceRect.left + diceRect.width / 2 - diceAreaRect.left - diceAreaRect.width / 2
+        offsetList[diceIndex][1] += diceRect.top + diceRect.height / 2 - diceAreaRect.top - diceAreaRect.height / 2
+      } else {
+        offsetList[diceIndex] = [0, 0]
+      }
+    })
+    state.setOffsetList(offsetList)
+    console.log(state.offsetList)
   }, [state.dices])
 
   // 初始化骰子
@@ -184,8 +201,17 @@ function Round() {
         {currentPlayer !== player.id ? '对' : '我'}方行动中
       </p>
       {/* 放置区域 */}
-      <div className="flex flex-wrap justify-center items-center border-3 border-dashed border-sky-200 rounded-xl p-1 min-h-20">
-        <AnimatePresence>
+      <div
+        ref={actionArea}
+        className="flex flex-wrap justify-center items-center border-3 border-dashed border-sky-200 rounded-xl p-1 h-20"
+      >
+        {
+          state.dices.filter(dice => dice.selected).map(dice => (
+            <div key={dice.index} data-dice-area={dice.index} className='w-15 h-15 m-0.5'>
+            </div>
+          ))
+        }
+        {/* <AnimatePresence>
           {
             state.dices.filter(dice => dice.selected).map(dice => (
               <motion.div
@@ -245,7 +271,7 @@ function Round() {
               </motion.div>
             ))
           }
-        </AnimatePresence>
+        </AnimatePresence> */}
       </div>
       <Button
         onClick={() => handleAction()}
@@ -260,19 +286,28 @@ function Round() {
           {
             state.diceSort.map((index, i) => (
               <div key={i} ref={diceArea} className='flex justify-center items-center'>
-                <AnimatePresence>
+                <AnimatePresence initial={false}>
                   {
-                    state.dices[index]?.point && !state.dices[index].selected && !state.dices[index].used &&
+                    state.dices[index]?.point && !state.dices[index].used &&
                     <motion.div
                       key={state.dices[index].key}
+                      data-dice={index}
                       initial={{
                         opacity: 0,
                         scale: 1.2,
                         x: state.dices[index].position[0],
                         y: state.dices[index].position[1],
-                        rotate: state.dices[index].rotate
+                        rotate: state.dices[index].selected ? 0 : state.dices[index].rotate,
+                        transformOrigin: 'center center'
                       }}
-                      animate={{ opacity: 1, scale: 1, transition: { delay: state.activeDelay ? 0.05 * index : 0 } }}
+                      animate={{
+                        opacity: 1,
+                        scale: 1,
+                        x: state.dices[index].position[0] - state.offsetList[index][0],
+                        y: state.dices[index].position[1] - state.offsetList[index][1],
+                        rotate: state.dices[index].selected ? 0 : state.dices[index].rotate,
+                        transition: { delay: state.activeDelay ? 0.05 * index : 0 }
+                      }}
                       exit={{ opacity: 0, pointerEvents: 'none' }}
                       className='absolute w-15 h-15 shadow cursor-pointer'
                       style={{
@@ -280,6 +315,7 @@ function Round() {
                       }}
                       onClick={() => {
                         if (currentPlayer !== player.id) return
+                        state.setActiveDelay(false)
                         state.selectDice(index)
                         RPC.call('select', index, RPC.Mode.OTHERS)
                         hideAll()

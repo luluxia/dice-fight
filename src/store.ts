@@ -223,6 +223,14 @@ interface RoundStore {
   setDices: (dice: any) => void
   selectDice: (index: number) => void
   useDice: () => void
+  /** 骰子原始位置 */
+  diceDefaultPosition: [number, number][]
+  setDiceDefaultPosition: (diceDefaultPosition: [number, number][]) => void
+  /** 骰子偏移位置 */
+  diceSelectedPosition: [number, number][]
+  setDiceSelectedPosition: (diceSelectedPosition: [number, number][]) => void
+  offsetList: [number, number][]
+  setOffsetList: (offset: [number, number][]) => void
   activeDelay: boolean
   setActiveDelay: (activeDelay: boolean) => void
   action: any
@@ -255,6 +263,12 @@ export const useRoundStore = create<RoundStore>(set => ({
       return dice
     })
   })),
+  diceDefaultPosition: [],
+  setDiceDefaultPosition: (diceDefaultPosition: [number, number][]) => set({ diceDefaultPosition }),
+  diceSelectedPosition: [],
+  setDiceSelectedPosition: (diceSelectedPosition: [number, number][]) => set({ diceSelectedPosition }),
+  offsetList: [],
+  setOffsetList: (offsetList: [number, number][]) => set({ offsetList }),
   activeDelay: false,
   setActiveDelay: (activeDelay: boolean) => set({ activeDelay }),
   action: null,
