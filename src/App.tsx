@@ -5,6 +5,7 @@ import Index from './views/Index'
 import Room from './views/Room'
 import Prepare from './views/Prepare'
 import Game from './views/Game'
+import Help from './views/Help'
 
 const pages: {
   [key: string]: React.FC
@@ -13,6 +14,7 @@ const pages: {
   room: Room,
   prepare: Prepare,
   game: Game,
+  help: Help,
 }
 
 function App() {

@@ -29,7 +29,7 @@ function Index() {
       },
       { text: '备战', color: 'lime', size: 2, action: () => changePage('prepare') },
       { text: '设置', color: 'sky', size: 1, action: () => toast.error('暂未开放') },
-      { text: '帮助', color: 'sky', size: 1, action: () => toast.error('暂未开放') },
+      { text: '帮助', color: 'sky', size: 1, action: () => changePage('help') },
     ],
     'multiplayer': [
       { text: '创建房间', color: 'rose', size: 2, action: () => changePage('room') },
@@ -79,13 +79,14 @@ function Index() {
           animate="visible"
           // exit={{ opacity: 0 }}
           variants={listVariants}
-          className="grid grid-cols-4 gap-2 absolute w-full p-5 pb-10 bottom-0"
+          className="grid grid-cols-4 gap-2 absolute w-full p-2 pb-10 bottom-0"
         >
           {
             menuList[menu].map((item, index) => (
               <motion.div
                 key={index}
                 variants={itemVariants}
+                whileTap={{ scale: 0.9 }}
                 onClick={() => {
                   if (item.action) {
                     item.action()

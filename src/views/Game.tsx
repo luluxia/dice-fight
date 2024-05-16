@@ -44,7 +44,7 @@ function Game() {
           </motion.div>
         }
       </AnimatePresence>
-      <div className='h-full flex flex-col py-10 max-w-screen-sm m-auto'>
+      <div className='h-full flex flex-col py-4 max-w-screen-sm m-auto'>
         {/* 顶部栏 */}
         {/* <div className="p-5 flex justify-end space-x-2">
           <p>退出</p>
@@ -52,7 +52,7 @@ function Game() {
           <p>{status}</p>
         </div> */}
         {/* 敌方信息 */}
-        <div className='px-10 flex justify-center items-center space-x-2'>
+        <div className='px-5 flex justify-center items-center space-x-2'>
           <div className='w-15 h-15 bg-white rounded-full shadow-sm border-2 border-white'></div>
           <div className='flex-1 space-y-1 text-center'>
             <p className="text-white text-shadow-sm">{opponent.id}</p>
@@ -86,7 +86,7 @@ function Game() {
           </div>
         </div>
         {/* 操作界面 */}
-        <div className='flex-1 p-5'>
+        <div className='flex-1 px-2 py-4'>
           <div className='relative w-full h-full bg-white rounded-xl shadow-xl'>
             <AnimatePresence>
               <motion.div
@@ -102,7 +102,7 @@ function Game() {
           </div>
         </div>
         {/* 我方信息 */}
-        <div className='px-10 flex justify-center items-center space-x-2'>
+        <div className='px-5 flex justify-center items-center space-x-2'>
           <div className='w-15 h-15 rounded-full shadow-sm border-2 border-white bg-white/50 overflow-hidden'>
             <img src="./img/avatar/0.png" alt="" />
           </div>

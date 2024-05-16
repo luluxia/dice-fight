@@ -90,7 +90,7 @@ function Room() {
   }, [player.ready, opponent.ready])
 
   return (
-    <div className="h-full flex flex-col max-w-screen-sm m-auto p-5">
+    <div className="h-full flex flex-col max-w-screen-sm m-auto p-2">
       <div className="w-full h-full bg-white rounded-xl shadow-xl flex">
         <AnimatePresence>
           {

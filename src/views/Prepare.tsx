@@ -3,6 +3,7 @@ import Tippy from '@tippyjs/react'
 import { hideAll } from 'tippy.js'
 import classNames from 'classnames'
 import { motion, AnimatePresence } from 'framer-motion'
+import Button from '../components/Button'
 import { chars } from '../data'
 
 import ActionDice from '../components/dice/ActionDice'
@@ -11,7 +12,7 @@ function Prepare() {
   const { charList, setCharList, removeCharList, changePage } = useStore()
 
   return (
-    <div className='h-full flex flex-col max-w-screen-sm m-auto p-5'>
+    <div className='h-full flex flex-col max-w-screen-sm m-auto p-2'>
       {/* 操作界面 */}
       <div className='relative w-full h-full bg-white rounded-xl shadow-xl p-3 space-y-2 flex flex-col'>
         {/* 标题 */}
@@ -57,7 +58,7 @@ function Prepare() {
         {/* 角色 */}
         <div className="relative flex flex-1 min-h-0 border-3 border-dashed border-sky-200 rounded-xl py-3">
           <p className="absolute -top-3 left-4 bg-white text-sky-400 px-1 text-sm">角色</p>
-          <div onScroll={() => hideAll()} className="w-full h-full px-3 overflow-y-auto">
+          <div onScroll={() => hideAll()} className="w-full h-full px-3 overflow-y-auto overscroll-contain">
             {
               chars.map((char, index) => (
                 <div
@@ -117,11 +118,12 @@ function Prepare() {
 
         </div>
         {/* 选项 */}
-        <div
+        <Button
           onClick={() => changePage('index')}
-          className="text-center bg-sky-400 py-2 rounded-3xl text-white text-shadow-sm shadow-sm cursor-pointer">
+          color='sky'
+        >
           返回
-        </div>
+        </Button>
       </div>
     </div>
   )
