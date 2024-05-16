@@ -1,7 +1,7 @@
 import { useRef, useEffect } from 'react'
 import Tippy from '@tippyjs/react'
 import { hideAll } from 'tippy.js'
-import { motion, AnimatePresence, LayoutGroup } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { RPC } from '../../tools'
 import { useGameStore, usePlayerStore, useOpponentStore, useRoundStore } from '../../store'
 import ActionDice from '../../components/dice/ActionDice'
@@ -39,25 +39,27 @@ function Round() {
   }
 
   const handleThrow = (points: number[]) => {
+    const randomList = Array(6).fill(0).map((_, i) => i)
+    randomList.sort(() => Math.random() - 0.5)
     const state = useRoundStore.getState()
-    const rect = diceArea.current?.getBoundingClientRect()
     const newDices: any = []
-    state.dices.map(dice => {
+    state.dices.map((dice, index) => {
       if (dice.used || dice.selected) {
         newDices.push(dice)
       } else {
+        const rect = document.querySelector(`[data-dice="${randomList[index]}"]`)?.getBoundingClientRect()
         const key = new Date().getTime()
-        const point = points[dice.index]
-        let x = rect?.width ? Math.floor(Math.random() * rect.width / 4) : 0
-        let y = rect?.height ? Math.floor(Math.random() * rect.height / 4) : 0
-        x = Math.random() > 0.5 ? x : -x
-        y = Math.random() > 0.5 ? y : -y
+        const point = points[index]
+        let x = 0, y = 0
+        if (rect) {
+          x = rect.left + Math.random() * (rect.width - 60)
+          y = rect.top + Math.random() * (rect.height - 60)
+        }
         const position = [x, y]
         const rotate = Math.floor(Math.random() * 360)
         newDices.push({ ...dice, key, point, position, rotate })
       }
     })
-    state.ranDomDiceSort()
     state.setDices(newDices)
     state.setActiveDelay(true)
     state.setRound(state.round - 1)
@@ -83,22 +85,20 @@ function Round() {
     } else {
       state.setAction(null)
     }
-    const offsetList = state.offsetList
+    const selectedDicesPosition = state.selectedDicesPosition
     state.dices.map(dice => {
       const diceIndex = dice.index
       if (dice.selected) {
-        const diceDom = document.querySelector(`[data-dice="${diceIndex}"]`) as HTMLElement
-        const diceRect = diceDom.getBoundingClientRect()
         const diceAreaDom = document.querySelector(`[data-dice-area="${diceIndex}"]`) as HTMLElement
         const diceAreaRect = diceAreaDom.getBoundingClientRect()
-        offsetList[diceIndex][0] += diceRect.left + diceRect.width / 2 - diceAreaRect.left - diceAreaRect.width / 2
-        offsetList[diceIndex][1] += diceRect.top + diceRect.height / 2 - diceAreaRect.top - diceAreaRect.height / 2
-      } else {
-        offsetList[diceIndex] = [0, 0]
+        selectedDicesPosition[diceIndex][0] = diceAreaRect.left
+        selectedDicesPosition[diceIndex][1] = diceAreaRect.top
+        if (diceAreaRect.width < 60) {
+          selectedDicesPosition[diceIndex][0] -= (60 - diceAreaRect.width) / 2
+        }
       }
     })
-    state.setOffsetList(offsetList)
-    console.log(state.offsetList)
+    state.setSelectedDicesPosition(selectedDicesPosition)
   }, [state.dices])
 
   // 初始化骰子
@@ -135,7 +135,6 @@ function Round() {
         used: false,
       })
     }
-    state.setDiceSort(Array(6).fill(0).map((_, i) => i))
     state.setDices(dices)
   }, [currentPlayer])
 
@@ -158,7 +157,6 @@ function Round() {
       }
       if (damage > 0) {
         const newHp = (opponent.hp - damage) < 0 ? 0 : opponent.hp - damage
-        console.log(newHp)
         opponent.set('hp', newHp)
         RPC.call('setOpponent', { hp: newHp }, RPC.Mode.OTHERS)
       }
@@ -203,7 +201,7 @@ function Round() {
       {/* 放置区域 */}
       <div
         ref={actionArea}
-        className="flex flex-wrap justify-center items-center border-3 border-dashed border-sky-200 rounded-xl p-1 h-20"
+        className="flex justify-center items-center border-3 border-dashed border-sky-200 rounded-xl p-1 h-20"
       >
         {
           state.dices.filter(dice => dice.selected).map(dice => (
@@ -211,67 +209,6 @@ function Round() {
             </div>
           ))
         }
-        {/* <AnimatePresence>
-          {
-            state.dices.filter(dice => dice.selected).map(dice => (
-              <motion.div
-                key={dice.index}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0, pointerEvents: 'none' }}
-                className='m-0.5 cursor-pointer'
-                layout
-                onClick={() => {
-                  if (currentPlayer !== player.id) return
-                  state.selectDice(dice.index)
-                  state.setActiveDelay(false)
-                  RPC.call('select', dice.index, RPC.Mode.OTHERS)
-                  hideAll()
-                }}
-              >
-                {
-                  dice.type === 'number' ?
-                    <img
-                      className='w-15 h-15 border-2 border-gray-500 rounded bg-white'
-                      src={`./img/dice_${dice.point}.svg`} alt=""
-                    /> :
-                    <Tippy
-                      content={
-                        <div
-                          className='bg-white rounded p-2 border-2 border-sky-400 shadow-xl space-y-2'
-                        >
-                          <p className='font-bold text-sky-400 text-center'>{chars[(dice.id as number)].name}</p>
-                          <div className='grid grid-cols-3 gap-2'>
-                            {
-                              Array(6).fill(0).map((_, i) => (
-                                <ActionDice key={i} char={chars[(dice.id as number)]} action={i} />
-                              ))
-                            }
-                          </div>
-                          <div className='text-center'>
-                            <p className='text-sky-400 font-bold'>
-                              {chars[dice.id].actions[state.dices[dice.index].point - 1].name}
-                            </p>
-                            <p className='text-dark-100'>
-                              {chars[dice.id].actions[state.dices[dice.index].point - 1].desc}
-                            </p>
-                          </div>
-                        </div>
-                      }
-                      arrow={false}
-                      hideOnClick={false}
-                      delay={[500, 0]}
-                    >
-                      <ActionDice
-                        char={chars[(dice.id as number)]}
-                        action={dice.point - 1}
-                      />
-                    </Tippy>
-                }
-              </motion.div>
-            ))
-          }
-        </AnimatePresence> */}
       </div>
       <Button
         onClick={() => handleAction()}
@@ -281,92 +218,95 @@ function Round() {
         {state.action?.name || '行动'}
       </Button>
       {/* 投掷区域 */}
-      <div className="flex-1 border-3 border-dashed border-sky-200 rounded-xl">
-        <div className="grid grid-cols-3 h-full">
+      <div ref={diceArea} className="flex-1 border-3 border-dashed border-sky-200 rounded-xl">
+        <div className='grid grid-cols-3 h-full'>
           {
-            state.diceSort.map((index, i) => (
-              <div key={i} ref={diceArea} className='flex justify-center items-center'>
-                <AnimatePresence initial={false}>
-                  {
-                    state.dices[index]?.point && !state.dices[index].used &&
-                    <motion.div
-                      key={state.dices[index].key}
-                      data-dice={index}
-                      initial={{
-                        opacity: 0,
-                        scale: 1.2,
-                        x: state.dices[index].position[0],
-                        y: state.dices[index].position[1],
-                        rotate: state.dices[index].selected ? 0 : state.dices[index].rotate,
-                        transformOrigin: 'center center'
-                      }}
-                      animate={{
-                        opacity: 1,
-                        scale: 1,
-                        x: state.dices[index].position[0] - state.offsetList[index][0],
-                        y: state.dices[index].position[1] - state.offsetList[index][1],
-                        rotate: state.dices[index].selected ? 0 : state.dices[index].rotate,
-                        transition: { delay: state.activeDelay ? 0.05 * index : 0 }
-                      }}
-                      exit={{ opacity: 0, pointerEvents: 'none' }}
-                      className='absolute w-15 h-15 shadow cursor-pointer'
-                      style={{
-                        transform: `translate(${state.dices[index].position[0]}px, ${state.dices[index].position[1]}px) rotate(${state.dices[index].rotate}deg`
-                      }}
-                      onClick={() => {
-                        if (currentPlayer !== player.id) return
-                        state.setActiveDelay(false)
-                        state.selectDice(index)
-                        RPC.call('select', index, RPC.Mode.OTHERS)
-                        hideAll()
-                      }}
-                    >
-                      {
-                        state.dices[index].type === 'number' ?
-                          <img
-                            className='border-2 border-gray-500 rounded bg-white'
-                            src={`./img/dice_${state.dices[index].point}.svg`} alt=""
-                          /> :
-                          <Tippy
-                            content={
-                              <div
-                                className='bg-white rounded p-2 border-2 border-sky-400 shadow-xl space-y-2'
-                              >
-                                <p className='font-bold text-sky-400 text-center'>{chars[(state.dices[index].id as number)].name}</p>
-                                <div className='grid grid-cols-3 gap-2'>
-                                  {
-                                    Array(6).fill(0).map((_, i) => (
-                                      <ActionDice key={i} char={chars[(state.dices[index].id as number)]} action={i} />
-                                    ))
-                                  }
-                                </div>
-                                <div className='text-center'>
-                                  <p className='text-sky-400 font-bold'>
-                                    {chars[(state.dices[index].id as number)].actions[state.dices[index].point - 1].name}
-                                  </p>
-                                  <p className='text-dark-100'>
-                                    {chars[(state.dices[index].id as number)].actions[state.dices[index].point - 1].desc}
-                                  </p>
-                                </div>
-                              </div>
-                            }
-                            arrow={false}
-                            hideOnClick={false}
-                            delay={[500, 0]}
-                          >
-                            <ActionDice
-                              char={chars[(state.dices[index].id as number)]}
-                              action={state.dices[index].point - 1}
-                            />
-                          </Tippy>
-                      }
-                    </motion.div>
-                  }
-                </AnimatePresence>
+            Array(6).fill(0).map((_, i) => (
+              <div key={i} data-dice={i} className='relative w-full h-full'>
+                <div className='w-full h-full' />
               </div>
             ))
           }
         </div>
+        {
+          state.dices.map((dice, index) => (
+            <AnimatePresence initial={false} key={index}>
+              {
+                dice.point && !dice.used &&
+                <motion.div
+                  key={dice.key}
+                  initial={{
+                    opacity: 0,
+                    scale: 1.2,
+                    x: dice.selected ? state.selectedDicesPosition[index][0] : dice.position[0],
+                    y: dice.selected ? state.selectedDicesPosition[index][1] : dice.position[1],
+                    rotate: dice.selected ? 0 : dice.rotate,
+                  }}
+                  animate={{
+                    opacity: 1,
+                    scale: 1,
+                    x: dice.selected ? state.selectedDicesPosition[index][0] : dice.position[0],
+                    y: dice.selected ? state.selectedDicesPosition[index][1] : dice.position[1],
+                    rotate: dice.selected ? 0 : dice.rotate,
+                    transition: { delay: state.activeDelay ? 0.05 * index : 0, ease: 'easeInOut' }
+                  }}
+                  exit={{ opacity: 0, pointerEvents: 'none' }}
+                  className='fixed left-0 top-0 w-15 h-15 shadow cursor-pointer'
+                  style={{
+                    transform: `translate(${dice.position[0]}px, ${dice.position[1]}px) rotate(${dice.rotate}deg`
+                  }}
+                  onClick={() => {
+                    if (currentPlayer !== player.id) return
+                    state.setActiveDelay(false)
+                    state.selectDice(index)
+                    RPC.call('select', index, RPC.Mode.OTHERS)
+                    hideAll()
+                  }}
+                >
+                  {
+                    dice.type === 'number' ?
+                      <img
+                        className='border-2 border-gray-500 rounded bg-white'
+                        src={`./img/dice_${dice.point}.svg`} alt=""
+                      /> :
+                      <Tippy
+                        content={
+                          <div
+                            className='bg-white rounded p-2 border-2 border-sky-400 shadow-xl space-y-2'
+                          >
+                            <p className='font-bold text-sky-400 text-center'>{chars[(dice.id as number)].name}</p>
+                            <div className='grid grid-cols-3 gap-2'>
+                              {
+                                Array(6).fill(0).map((_, i) => (
+                                  <ActionDice key={i} char={chars[(dice.id as number)]} action={i} />
+                                ))
+                              }
+                            </div>
+                            <div className='text-center'>
+                              <p className='text-sky-400 font-bold'>
+                                {chars[(dice.id as number)].actions[dice.point - 1].name}
+                              </p>
+                              <p className='text-dark-100'>
+                                {chars[(dice.id as number)].actions[dice.point - 1].desc}
+                              </p>
+                            </div>
+                          </div>
+                        }
+                        arrow={false}
+                        hideOnClick={false}
+                        delay={[500, 0]}
+                      >
+                        <ActionDice
+                          char={chars[(dice.id as number)]}
+                          action={dice.point - 1}
+                        />
+                      </Tippy>
+                  }
+                </motion.div>
+              }
+            </AnimatePresence>
+          ))
+        }
       </div>
       <div className="relative flex justify-center space-x-2">
         <Button

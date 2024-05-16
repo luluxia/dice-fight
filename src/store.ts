@@ -206,9 +206,6 @@ export const useOpponentStore = create<PlayerStore>(set => ({
 }))
 
 interface RoundStore {
-  diceSort: number[]
-  setDiceSort: (diceSort: number[]) => void
-  ranDomDiceSort: () => void
   dices: {
     id: number,
     index: number,
@@ -223,14 +220,8 @@ interface RoundStore {
   setDices: (dice: any) => void
   selectDice: (index: number) => void
   useDice: () => void
-  /** 骰子原始位置 */
-  diceDefaultPosition: [number, number][]
-  setDiceDefaultPosition: (diceDefaultPosition: [number, number][]) => void
-  /** 骰子偏移位置 */
-  diceSelectedPosition: [number, number][]
-  setDiceSelectedPosition: (diceSelectedPosition: [number, number][]) => void
-  offsetList: [number, number][]
-  setOffsetList: (offset: [number, number][]) => void
+  selectedDicesPosition: [number, number][]
+  setSelectedDicesPosition: (offset: [number, number][]) => void
   activeDelay: boolean
   setActiveDelay: (activeDelay: boolean) => void
   action: any
@@ -241,9 +232,6 @@ interface RoundStore {
 }
 
 export const useRoundStore = create<RoundStore>(set => ({
-  diceSort: [],
-  setDiceSort: (diceSort: number[]) => set({ diceSort }),
-  ranDomDiceSort: () => set(state => ({ diceSort: state.diceSort.sort(() => Math.random() - 0.5) })),
   dices: [],
   setDices: (dices) => set({ dices }),
   selectDice: (index: number) => set(state => ({
@@ -263,12 +251,8 @@ export const useRoundStore = create<RoundStore>(set => ({
       return dice
     })
   })),
-  diceDefaultPosition: [],
-  setDiceDefaultPosition: (diceDefaultPosition: [number, number][]) => set({ diceDefaultPosition }),
-  diceSelectedPosition: [],
-  setDiceSelectedPosition: (diceSelectedPosition: [number, number][]) => set({ diceSelectedPosition }),
-  offsetList: [],
-  setOffsetList: (offsetList: [number, number][]) => set({ offsetList }),
+  selectedDicesPosition: [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0] ],
+  setSelectedDicesPosition: (selectedDicesPosition: [number, number][]) => set({ selectedDicesPosition }),
   activeDelay: false,
   setActiveDelay: (activeDelay: boolean) => set({ activeDelay }),
   action: null,
