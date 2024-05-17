@@ -144,7 +144,7 @@ function Index() {
           }
         </motion.div>
       </AnimatePresence>
-      <p className='absolute w-full text-center py-2.5 text-sm text-white bottom-0'>© 2024 陆陆侠. v0.1.0</p>
+      <p className='absolute w-full text-center py-2.5 text-sm text-white bottom-0'>© 2024 陆陆侠. v0.1.1</p>
     </div>
   )
 }

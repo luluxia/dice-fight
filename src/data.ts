@@ -10,7 +10,7 @@ export const chars = [
       { type: 'attack', pic: 'sword', background: 'bg-rose-400', name: '精准攻击', value: 3, desc: '造成3点伤害' },
       { type: 'attack', pic: 'sword', background: 'bg-rose-400', name: '精准攻击', value: 3, desc: '造成3点伤害' },
       { type: 'attack', pic: 'sword', background: 'bg-rose-400', name: '精准攻击', value: 3, desc: '造成3点伤害' },
-      { type: 'shield', pic: 'shield', background: 'bg-sky-400', name: '精准格挡', value: 6, desc: '获得3点护盾' },
+      { type: 'shield', pic: 'shield', background: 'bg-sky-400', name: '精准格挡', value: 6, desc: '获得6点护盾' },
     ]
   },
   {
@@ -21,8 +21,8 @@ export const chars = [
     actions: [
       { type: 'attack', pic: 'sword', background: 'bg-rose-400', name: '射击', desc: '造成伤害' },
       { type: 'attack', pic: 'sword', background: 'bg-rose-400', name: '射击', desc: '造成伤害' },
-      { type: 'attack', pic: 'sword', background: 'bg-rose-400', name: '精准射击', value: 6, desc: '造成9点伤害' },
-      { type: 'attack', pic: 'sword', background: 'bg-rose-400', name: '精准射击', value: 6, desc: '造成9点伤害' },
+      { type: 'attack', pic: 'sword', background: 'bg-rose-400', name: '精准射击', value: 6, desc: '造成6点伤害' },
+      { type: 'attack', pic: 'sword', background: 'bg-rose-400', name: '精准射击', value: 6, desc: '造成6点伤害' },
       { type: 'empty', background: 'bg-gray-400', name: '未命中' },
       { type: 'empty', background: 'bg-gray-400', name: '未命中' },
     ]
@@ -48,9 +48,9 @@ export const chars = [
     background: 'bg-gradient-to-br from-rose-500 to-sky-500',
     actions: [
       { type: 'attack', pic: 'sword', background: 'bg-rose-400', name: '飞弹', desc: '造成伤害' },
-      { type: 'attack', pic: 'sword', background: 'bg-rose-400', name: '精准飞弹', value: 6, desc: '造成9点伤害' },
+      { type: 'attack', pic: 'sword', background: 'bg-rose-400', name: '精准飞弹', value: 6, desc: '造成6点伤害' },
       { type: 'shield', pic: 'shield', background: 'bg-sky-400', name: '护盾术', desc: '获得护盾' },
-      { type: 'shield', pic: 'shield', background: 'bg-sky-400', name: '精准护盾术', value: 6, desc: '获得9点护盾' },
+      { type: 'shield', pic: 'shield', background: 'bg-sky-400', name: '精准护盾术', value: 6, desc: '获得6点护盾' },
       { type: 'empty', background: 'bg-gray-400', name: '施法失败' },
       { type: 'empty', background: 'bg-gray-400', name: '施法失败' },
     ]
@@ -62,9 +62,9 @@ export const chars = [
     background: 'bg-gradient-to-br from-rose-500 to-amber-500',
     actions: [
       { type: 'attack', pic: 'sword', background: 'bg-rose-400', name: '圣光', desc: '造成伤害' },
-      { type: 'attack', pic: 'sword', background: 'bg-rose-400', name: '精准圣光', value: 4, desc: '造成3点伤害' },
-      { type: 'heart', pic: 'hearts', background: 'bg-amber-400', name: '精准治疗', value: 4, desc: '恢复3点生命' },
-      { type: 'heart', pic: 'hearts', background: 'bg-amber-400', name: '精准治疗', value: 4, desc: '恢复3点生命' },
+      { type: 'attack', pic: 'sword', background: 'bg-rose-400', name: '精准圣光', value: 4, desc: '造成4点伤害' },
+      { type: 'heart', pic: 'hearts', background: 'bg-amber-400', name: '精准治疗', value: 4, desc: '恢复4点生命' },
+      { type: 'heart', pic: 'hearts', background: 'bg-amber-400', name: '精准治疗', value: 4, desc: '恢复4点生命' },
       { type: 'heart', pic: 'hearts', background: 'bg-amber-400', name: '精准治疗', value: 6, desc: '恢复6点生命' },
       { type: 'heart', pic: 'hearts', background: 'bg-amber-400', name: '精准治疗', value: 6, desc: '恢复6点生命' },
     ]
@@ -75,7 +75,7 @@ export const chars = [
     pic: 'char_11',
     background: 'bg-gradient-to-br from-rose-500 to-amber-500',
     actions: [
-      { type: 'attack', pic: 'sword', background: 'bg-rose-400', name: '精准小刀突刺', value: 4, desc: '造成2点伤害' },
+      { type: 'attack', pic: 'sword', background: 'bg-rose-400', name: '精准小刀突刺', value: 4, desc: '造成4点伤害' },
       { type: 'heart', pic: 'hearts', background: 'bg-amber-400', name: '医治', desc: '恢复生命' },
       { type: 'heart', pic: 'hearts', background: 'bg-amber-400', name: '精准医治', value: 4, desc: '恢复4点生命' },
       { type: 'heart', pic: 'hearts', background: 'bg-amber-400', name: '精准医治', value: 4, desc: '恢复4点生命' },
@@ -90,10 +90,10 @@ export const chars = [
     background: 'bg-gradient-to-br from-rose-500 to-sky-500',
     actions: [
       { type: 'attack', pic: 'sword', background: 'bg-rose-400', name: '飞弹', desc: '造成伤害' },
-      { type: 'attack', pic: 'sword', background: 'bg-rose-400', name: '精准飞弹', value: 2, desc: '造成2点伤害' },
+      { type: 'attack', pic: 'sword', background: 'bg-rose-400', name: '精准飞弹', value: 3, desc: '造成3点伤害' },
       { type: 'attack', pic: 'sword', background: 'bg-rose-400', name: '精准飞弹', value: 4, desc: '造成4点伤害' },
       { type: 'shield', pic: 'shield', background: 'bg-sky-400', name: '护盾术', desc: '获得护盾' },
-      { type: 'shield', pic: 'shield', background: 'bg-sky-400', name: '精准护盾术', value: 2, desc: '获得2点护盾' },
+      { type: 'shield', pic: 'shield', background: 'bg-sky-400', name: '精准护盾术', value: 3, desc: '获得3点护盾' },
       { type: 'shield', pic: 'shield', background: 'bg-sky-400', name: '精准护盾术', value: 4, desc: '获得4点护盾' },
     ]
   },
@@ -104,9 +104,9 @@ export const chars = [
     background: 'bg-gradient-to-br from-rose-500 to-amber-500',
     actions: [
       { type: 'attack', pic: 'sword', background: 'bg-rose-400', name: '树根缠绕', desc: '造成伤害' },
-      { type: 'attack', pic: 'sword', background: 'bg-rose-400', name: '精准树根缠绕', value: 6, desc: '造成伤害' },
+      { type: 'attack', pic: 'sword', background: 'bg-rose-400', name: '精准树根缠绕', value: 6, desc: '造成6点伤害' },
       { type: 'heart', pic: 'hearts', background: 'bg-amber-400', name: '再生', desc: '恢复生命' },
-      { type: 'heart', pic: 'hearts', background: 'bg-amber-400', name: '精准再生', value: 6, desc: '恢复生命' },
+      { type: 'heart', pic: 'hearts', background: 'bg-amber-400', name: '精准再生', value: 6, desc: '恢复6点生命' },
       { type: 'empty', background: 'bg-gray-400', name: '施法失败' },
       { type: 'empty', background: 'bg-gray-400', name: '施法失败' },
     ]

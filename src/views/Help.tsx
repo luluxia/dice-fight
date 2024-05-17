@@ -72,6 +72,13 @@ function Help() {
           {
             state.selected === 1 &&
             <div className='text-dark-100'>
+              <p className='text-sky-400 bg-sky-50 font-bold my-1 px-2 py-1 rounded'>v0.1.1</p>
+              <p>平衡性调整：</p>
+              <p>我们认为牧师的部分能力过于薄弱，因此我们对其进行了增强。</p>
+              <p>BUG修复：</p>
+              <p>修复了角色行动描述错误的问题。</p>
+              <p>游戏优化：</p>
+              <p>现在移动端可以通过长按显示角色骰子的详情。</p>
               <p className='text-sky-400 bg-sky-50 font-bold my-1 px-2 py-1 rounded'>v0.1.0</p>
               <p>平衡性调整：</p>
               <p>《骰子大作战》的设计师们已经注意到了目前版本角色使用率的一些变化，诸如树精、弓箭手过于优越的数值表现，让游戏变得有些不健康。而战士等角色鲜有上场，这并不是我们所期望看见的。所以我们将对这些角色做出一些合理改动以使得游戏对局能够更加精彩。</p>

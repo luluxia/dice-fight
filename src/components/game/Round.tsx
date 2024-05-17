@@ -300,6 +300,7 @@ function Round() {
                         arrow={false}
                         hideOnClick={false}
                         delay={[500, 0]}
+                        touch={['hold', 100]}
                       >
                         <ActionDice
                           char={chars[(dice.id as number)]}
