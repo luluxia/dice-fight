@@ -1,5 +1,7 @@
+import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useGameStore, usePlayerStore, useOpponentStore } from '../store'
+import { RPC } from '../tools'
 import RoundOrder from '../components/game/RoundOrder'
 // import BanPick from '../components/game/BanPick'
 import Round from '../components/game/Round'
@@ -14,7 +16,19 @@ const components: {
   'result': Result,
 }
 
+const textMessages = [
+  { title: '问候', content: '你好！' },
+  { title: '赞扬', content: '打得不错！' },
+  { title: '催促', content: '搞快点！' },
+  { title: '挑衅', content: '我的魔法，会把你撕成碎片！' },
+  { title: '邀请', content: '再来一把！' },
+  { title: '道别', content: '再见！' },
+  { title: '思考', content: '让我想想…' },
+  { title: '稍等', content: '你先别急！' },
+]
+
 function Game() {
+  const [showMessageList, setShowMessageList] = useState(false)
   const { status, title } = useGameStore()
 
   const player = usePlayerStore()
@@ -22,8 +36,74 @@ function Game() {
 
   const ComponentToRender = components[status]
 
+  useEffect(() => {
+    RPC.register('setPlayerMessage', async (message: any) => {
+      opponent.setMessage(message)
+    })
+  })
+
   return (
     <>
+      <AnimatePresence initial={false}>
+        {
+          showMessageList &&
+          <motion.div
+            key={'join-room'}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className='fixed left-0 top-0 w-full h-full bg-black/40 z-1 flex p-5'
+            onClick={() => setShowMessageList(false)}
+          >
+            <div
+              onClick={e => e.stopPropagation()}
+              className={`
+                m-auto max-w-screen-sm max-h-full bg-white p-3 rounded-xl
+                space-y-2 flex flex-col shadow-sm
+              `}
+            >
+              <p className='text-center font-bold text-sky-400'>交流</p>
+              <div className='border-3 border-dashed border-sky-200 rounded-xl p-3 overflow-y-auto overscroll-contain'>
+                <div className='grid grid-cols-8 gap-1 <sm:grid-cols-4'>
+                  {
+                    textMessages.map((msg, i) => (
+                      <div
+                        key={i}
+                        onClick={() => {
+                          player.setMessage({ type: 'text', id: i })
+                          RPC.call('setPlayerMessage', { type: 'text', id: i }, RPC.Mode.OTHERS)
+                          setShowMessageList(false)
+                        }}
+                        className='cursor-pointer rounded p-1 transition-colors hover:bg-black/5'
+                      >
+                        <p className='text-center font-bold text-sky-400 p-2 bg-sky-50 rounded-xl'>{msg.title}</p>
+                      </div>
+                    ))
+                  }
+                  {
+                    Array.from({ length: 16 }).map((_, i) => (
+                      <div
+                        key={i}
+                        onClick={() => {
+                          player.setMessage({ type: 'emoji', id: i })
+                          RPC.call('setPlayerMessage', { type: 'emoji', id: i }, RPC.Mode.OTHERS)
+                          setShowMessageList(false)
+                        }}
+                        className='cursor-pointer rounded p-1 transition-colors hover:bg-black/5'
+                      >
+                        <img
+                          className='w-full'
+                          src={`./img/emoji/${i}.svg`} alt=""
+                        />
+                      </div>
+                    ))
+                  }
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        }
+      </AnimatePresence>
       <AnimatePresence>
         {
           title &&
@@ -52,10 +132,44 @@ function Game() {
           <p>{status}</p>
         </div> */}
         {/* 敌方信息 */}
-        <div className='px-5 flex justify-center items-center space-x-2'>
-          <div className='w-15 h-15 bg-white rounded-full shadow-sm border-2 border-white'></div>
+        <div className='relative px-5 flex justify-center items-center'>
+          <AnimatePresence>
+            {
+              opponent.message.id !== -1 &&
+              <motion.div
+                key={opponent.message.key}
+                className='absolute left-2 min-w-21 top-18 bg-sky-400 p-2 rounded-xl border-2 border-white shadow z-1'
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.5 }}
+              >
+                {
+                  opponent.message.type === 'text' &&
+                  <p className='text-white text-shadow-sm'>
+                    {textMessages[opponent.message.id].content}
+                  </p>
+                }
+                {
+                  opponent.message.type === 'emoji' &&
+                  <img
+                    className='w-15 h-15 m-auto'
+                    src={`./img/emoji/${opponent.message.id}.svg`} alt=""
+                  />
+                }
+              </motion.div>
+            }
+          </AnimatePresence>
+          <div
+            onClick={() => setShowMessageList(true)}
+            className={`
+              w-15 h-15 rounded-full shadow-sm border-2 border-sky-200
+              pattern-diagonal-stripes-sm !bg-sky-50 text-sky-100 overflow-hidden cursor-pointer mr-3
+            `}
+          >
+            <img src={`./img/avatar/${opponent.avatar}.png`} alt="" />
+          </div>
           <div className='flex-1 space-y-1 text-center'>
-            <p className="text-white text-shadow-sm">{opponent.id}</p>
+            <p className="text-white text-shadow-sm">{opponent.nick}</p>
             <div className='relative h-6 bg-white/20 rounded-xl border-white border-2 text-sm shadow-sm flex justify-center'>
               <div className='absolute rounded-xl w-full h-full overflow-hidden'>
                 <div
@@ -102,12 +216,44 @@ function Game() {
           </div>
         </div>
         {/* 我方信息 */}
-        <div className='px-5 flex justify-center items-center space-x-2'>
-          <div className='w-15 h-15 rounded-full shadow-sm border-2 border-white bg-white/50 overflow-hidden'>
-            <img src="./img/avatar/0.png" alt="" />
+        <div className='relative px-5 flex justify-center items-center'>
+          <AnimatePresence>
+            {
+              player.message.id !== -1 &&
+              <motion.div
+                key={player.message.key}
+                className='absolute left-2 min-w-21 bottom-18 bg-sky-400 p-2 rounded-xl border-2 border-white shadow'
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.5 }}
+              >
+                {
+                  player.message.type === 'text' &&
+                  <p className='text-white text-shadow-sm'>
+                    {textMessages[player.message.id].content}
+                  </p>
+                }
+                {
+                  player.message.type === 'emoji' &&
+                  <img
+                    className='w-15 h-15 m-auto'
+                    src={`./img/emoji/${player.message.id}.svg`} alt=""
+                  />
+                }
+              </motion.div>
+            }
+          </AnimatePresence>
+          <div
+            onClick={() => setShowMessageList(true)}
+            className={`
+              w-15 h-15 rounded-full shadow-sm border-2 border-sky-200
+              pattern-diagonal-stripes-sm !bg-sky-50 text-sky-100 overflow-hidden cursor-pointer mr-3
+            `}
+          >
+            <img src={`./img/avatar/${player.avatar}.png`} alt="" />
           </div>
           <div className='flex-1 space-y-1 text-center'>
-            <p className="text-white text-shadow-sm">{player.id}</p>
+            <p className="text-white text-shadow-sm">{player.nick}</p>
             <div className='relative h-6 bg-white/20 rounded-xl border-white border-2 text-sm shadow-sm flex justify-center'>
               <div className='absolute rounded-xl w-full h-full overflow-hidden'>
                 <div

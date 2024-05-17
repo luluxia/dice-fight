@@ -22,6 +22,7 @@ export default defineConfig({
   safelist: [
     'col-span-1',
     'col-span-2',
+    'col-span-4',
     'bg-gradient-to-br',
     ...defineColorSafelist(['rose', 'sky', 'amber', 'orange', 'lime']),
   ]

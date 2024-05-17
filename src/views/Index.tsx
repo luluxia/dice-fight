@@ -3,8 +3,11 @@ import { motion, AnimatePresence } from 'framer-motion'
 import classNames from 'classnames'
 import toast from 'react-hot-toast'
 import { useStore } from '../store'
+import Button from '../components/Button'
 
 function Index() {
+  const [roomCode, setRoomCode] = useState('')
+  const [showJoinRoom, setShowJoinRoom] = useState(false)
   const [menu, setMenu] = useState('index')
   const { changePage, charList, loadCharList } = useStore()
 
@@ -33,7 +36,8 @@ function Index() {
     ],
     'multiplayer': [
       { text: '创建房间', color: 'rose', size: 2, action: () => changePage('room') },
-      { text: '返回', color: 'sky', size: 2, action: () => setMenu('index') },
+      { text: '加入房间', color: 'orange', size: 2, action: () => setShowJoinRoom(true) },
+      { text: '返回', color: 'sky', size: 4, action: () => setMenu('index') },
     ],
   }
 
@@ -63,6 +67,39 @@ function Index() {
 
   return (
     <div className="relative max-w-screen-sm h-full m-auto">
+      <AnimatePresence initial={false}>
+        {
+          showJoinRoom &&
+          <motion.div
+            key={'join-room'}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className='fixed left-0 top-0 w-full h-full bg-black/50 z-1 flex'
+            onClick={() => setShowJoinRoom(false)}
+          >
+            <div
+              onClick={e => e.stopPropagation()}
+              className='m-auto bg-white p-5 rounded-2xl border-3 border-sky-300 space-y-5 text-center'
+            >
+              <p className='font-bold text-sky-400 text-xl'>请输入房间号</p>
+              <input
+                className='text-sky-400 font-bold text-center bg-sky-100 border-2 border-sky-200 p-1 rounded-2xl w-40 outline-none'
+                maxLength={4}
+                value={roomCode}
+                onChange={e => setRoomCode(e.target.value)}
+              />
+              <Button
+                onClick={() => {
+                  window.location.hash = `#r=R${roomCode.toLocaleUpperCase()}`
+                  window.location.reload()
+                }}
+                color="sky"
+              >加入</Button>
+            </div>
+          </motion.div>
+        }
+      </AnimatePresence>
       <div className="flex flex-col justify-center items-center w-full h-[calc(100%-10rem)] space-y-2">
         <motion.img
           initial={{ scale: 0 }}

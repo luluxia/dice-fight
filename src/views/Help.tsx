@@ -14,7 +14,7 @@ function Help() {
       <div className='relative w-full h-full bg-white rounded-xl shadow-xl p-3 space-y-2 flex flex-col'>
         {/* 标题 */}
         <p className="text-center font-bold text-sky-400">帮助</p>
-        <div className="bg-sky-50 flex mx-auto space-x-2 rounded-full border-2 border-sky-400">
+        <div className="bg-sky-50 flex mx-auto space-x-2 rounded-full border-3 border-dashed border-sky-200">
           {
             state.menu.map((item, index) => (
               <p
@@ -67,7 +67,30 @@ function Help() {
               <p>放入行动栏内的骰子符合行动要求时，可以被打出消耗。</p>
               <p>行动栏内的骰子将不受投掷影响。</p>
               <p>当双方玩家任一血量归零时，游戏结束。</p>
-              <p className='text-sky-400 bg-sky-50 font-bold my-1 px-2 py-1 rounded'>角色骰子行动</p>
+            </div>
+          }
+          {
+            state.selected === 1 &&
+            <div className='text-dark-100'>
+              <p className='text-sky-400 bg-sky-50 font-bold my-1 px-2 py-1 rounded'>v0.1.0</p>
+              <p>平衡性调整：</p>
+              <p>《骰子大作战》的设计师们已经注意到了目前版本角色使用率的一些变化，诸如树精、弓箭手过于优越的数值表现，让游戏变得有些不健康。而战士等角色鲜有上场，这并不是我们所期望看见的。所以我们将对这些角色做出一些合理改动以使得游戏对局能够更加精彩。</p>
+            </div>
+          }
+          {
+            state.selected === 2 &&
+            <div className='text-dark-100'>
+              <p className='text-sky-400 bg-sky-50 font-bold my-1 px-2 py-1 rounded'>开发人员</p>
+              <p>程序：陆陆侠</p>
+              <p>策划/设计：陆陆侠、萧剑羽</p>
+              <p>美术：陆陆侠</p>
+              <p className='text-sky-400 bg-sky-50 font-bold my-1 px-2 py-1 rounded'>使用素材</p>
+              <p>https://kenney-assets.itch.io/board-game-icons</p>
+              <p>https://pixerelia.itch.io/vas-mini-characters</p>
+              <p>https://rhosgfx.itch.io/vector-emojis</p>
+              <p>https://masuone.itch.io/magical-character-pack</p>
+              <p className='text-sky-400 bg-sky-50 font-bold my-1 px-2 py-1 rounded'>特别感谢</p>
+              <p>游戏灵感来源《火山的女儿》</p>
             </div>
           }
         </div>

@@ -147,6 +147,8 @@ interface PlayerStore {
   id: string
   /** 昵称 */
   nick: string
+  /** 头像 */
+  avatar: string
   /** 角色列表 */
   charList: number[]
   /** 是否准备 */
@@ -161,15 +163,25 @@ interface PlayerStore {
   hpMax: number
   /** 护盾 */
   shield: number
+  /** 发言 */
+  message: {
+    key: number
+    type: string
+    id: number
+  }
   /** 设置 */
   set: (k: any, v: any) => void
   /** 重置 */
   reset: () => void
+  setMessage: (message: any) => void
 }
+
+let playerMessageTimer = 0
 
 export const usePlayerStore = create<PlayerStore>(set => ({
   id: '',
   nick: '',
+  avatar: '',
   charList: [],
   ready: false,
   banId: -1,
@@ -177,18 +189,34 @@ export const usePlayerStore = create<PlayerStore>(set => ({
   hp: 50,
   hpMax: 50,
   shield: 0,
+  message: {
+    key: 0,
+    type: '',
+    id: -1
+  },
   set: (k: any, v: any) => set({ [k]: v }),
   reset: () => set(() => ({
     ready: false,
     hp: 50,
     hpMax: 50,
     shield: 0,
-  }))
+  })),
+  setMessage: (message) => {
+    clearTimeout(playerMessageTimer)
+    const key = Math.random()
+    set({ message: { key, ...message } })
+    playerMessageTimer = setTimeout(() => {
+      set({ message: { key: 0, type: '', id: -1 } })
+    }, 2000)
+  }
 }))
+
+let opponentMessageTimer = 0
 
 export const useOpponentStore = create<PlayerStore>(set => ({
   id: '',
   nick: '',
+  avatar: '',
   charList: [],
   ready: false,
   banId: -1,
@@ -196,13 +224,26 @@ export const useOpponentStore = create<PlayerStore>(set => ({
   hp: 50,
   hpMax: 50,
   shield: 0,
+  message: {
+    key: 0,
+    type: '',
+    id: -1
+  },
   set: (k: any, v: any) => set({ [k]: v }),
   reset: () => set(() => ({
     ready: false,
     hp: 50,
     hpMax: 50,
     shield: 0,
-  }))
+  })),
+  setMessage: (message) => {
+    clearTimeout(opponentMessageTimer)
+    const key = Math.random()
+    set({ message: { key, ...message } })
+    opponentMessageTimer = setTimeout(() => {
+      set({ message: { key: 0, type: '', id: -1 } })
+    }, 2000)
+  }
 }))
 
 interface RoundStore {
@@ -251,7 +292,7 @@ export const useRoundStore = create<RoundStore>(set => ({
       return dice
     })
   })),
-  selectedDicesPosition: [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0] ],
+  selectedDicesPosition: [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0]],
   setSelectedDicesPosition: (selectedDicesPosition: [number, number][]) => set({ selectedDicesPosition }),
   activeDelay: false,
   setActiveDelay: (activeDelay: boolean) => set({ activeDelay }),

@@ -136,6 +136,11 @@ function Round() {
       })
     }
     state.setDices(dices)
+    // 轮到我方回合时，清空护盾
+    if (currentPlayer === player.id) {
+      player.set('shield', 0)
+      RPC.call('setPlayer', { shield: 0 }, RPC.Mode.OTHERS)
+    }
   }, [currentPlayer])
 
   const handleAction = () => {

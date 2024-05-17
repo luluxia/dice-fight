@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react'
 import { RPC } from '../../tools'
 import { motion, AnimatePresence } from 'framer-motion'
-import classNames from 'classnames'
 import { useGameStore, usePlayerStore, useOpponentStore, useRoundOrderStore } from '../../store'
+import Button from '../Button'
 
 function RoundOrder() {
   const state = useRoundOrderStore()
@@ -126,17 +126,7 @@ function RoundOrder() {
           </AnimatePresence>
         </div>
       </div>
-      <div className="relative flex justify-center space-x-2">
-        <div
-          onClick={() => handlePlayerThrow()}
-          className={classNames(
-            'flex-1 text-center bg-sky-400 py-2 rounded-3xl text-white text-shadow-sm shadow-sm cursor-pointer transition-colors hover:bg-sky-500',
-            { 'opacity-50 cursor-not-allowed pointer-events-none': !state.throwEnable }
-          )}
-        >
-          投掷
-        </div>
-      </div>
+      <Button onClick={() => handlePlayerThrow()} color="sky" disabled={!state.throwEnable}>投掷</Button>
     </div>
   )
 }
