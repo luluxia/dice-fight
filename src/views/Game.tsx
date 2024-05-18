@@ -44,21 +44,22 @@ function Game() {
 
   return (
     <>
+      {/* 交流列表 */}
       <AnimatePresence initial={false}>
         {
           showMessageList &&
           <motion.div
-            key={'join-room'}
+            key={'message-list'}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className='fixed left-0 top-0 w-full h-full bg-black/40 z-1 flex p-5'
+            className='fixed left-0 top-0 w-full h-full bg-black/40 z-1 flex justify-center items-end p-5'
             onClick={() => setShowMessageList(false)}
           >
             <div
               onClick={e => e.stopPropagation()}
               className={`
-                m-auto max-w-screen-sm max-h-full bg-white p-3 rounded-xl
+                max-w-screen-sm max-h-full bg-white p-3 rounded-xl
                 space-y-2 flex flex-col shadow-sm
               `}
             >
@@ -104,6 +105,7 @@ function Game() {
           </motion.div>
         }
       </AnimatePresence>
+      {/* 对局提示 */}
       <AnimatePresence>
         {
           title &&
@@ -160,10 +162,9 @@ function Game() {
             }
           </AnimatePresence>
           <div
-            onClick={() => setShowMessageList(true)}
             className={`
               w-15 h-15 rounded-full shadow-sm border-2 border-sky-200
-              pattern-diagonal-stripes-sm !bg-sky-50 text-sky-100 overflow-hidden cursor-pointer mr-3
+              pattern-diagonal-stripes-sm !bg-sky-50 text-sky-100 overflow-hidden mr-3
             `}
           >
             <img src={`./img/avatar/${opponent.avatar}.png`} alt="" />

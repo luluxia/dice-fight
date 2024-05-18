@@ -44,19 +44,19 @@ function Round() {
     const state = useRoundStore.getState()
     const newDices: any = []
     state.dices.map((dice, index) => {
+      const rect = document.querySelector(`[data-dice="${randomList[index]}"]`)?.getBoundingClientRect()
+      const key = new Date().getTime()
+      const point = points[index]
+      let x = 0, y = 0
+      if (rect) {
+        x = rect.left + Math.random() * (rect.width - 60)
+        y = rect.top + Math.random() * (rect.height - 60)
+      }
+      const position = [x, y]
+      const rotate = Math.floor(Math.random() * 360)
       if (dice.used || dice.selected) {
-        newDices.push(dice)
+        newDices.push({ ...dice, position, rotate })
       } else {
-        const rect = document.querySelector(`[data-dice="${randomList[index]}"]`)?.getBoundingClientRect()
-        const key = new Date().getTime()
-        const point = points[index]
-        let x = 0, y = 0
-        if (rect) {
-          x = rect.left + Math.random() * (rect.width - 60)
-          y = rect.top + Math.random() * (rect.height - 60)
-        }
-        const position = [x, y]
-        const rotate = Math.floor(Math.random() * 360)
         newDices.push({ ...dice, key, point, position, rotate })
       }
     })
@@ -188,7 +188,12 @@ function Round() {
       changeCurrentPlayer(player.id)
       changeTitle('我方回合')
     }
-    state.setRound(3)
+    state.addNowRound()
+    if (useRoundStore.getState().nowRound === 2) {
+      state.setRound(4)
+    } else {
+      state.setRound(3)
+    }
   }
 
   // 监听血量变化，判断胜负

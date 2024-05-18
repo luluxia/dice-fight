@@ -1,4 +1,4 @@
-const version = 'v0.1.0';
+const version = 'v0.1.2';
 // sw.js
 self.addEventListener('install', function(event) {
   self.skipWaiting();

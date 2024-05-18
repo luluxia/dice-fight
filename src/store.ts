@@ -267,6 +267,8 @@ interface RoundStore {
   setActiveDelay: (activeDelay: boolean) => void
   action: any
   setAction: (action: any) => void
+  nowRound: number
+  addNowRound: () => void
   round: number
   setRound: (round: number) => void
   reset: () => void
@@ -298,6 +300,8 @@ export const useRoundStore = create<RoundStore>(set => ({
   setActiveDelay: (activeDelay: boolean) => set({ activeDelay }),
   action: null,
   setAction: (action: any) => set({ action }),
+  nowRound: 1,
+  addNowRound: () => set((store) => ({ nowRound: store.nowRound + 1 })),
   round: 3,
   setRound: (round: number) => set({ round }),
   reset: () => set(() => ({
@@ -305,6 +309,7 @@ export const useRoundStore = create<RoundStore>(set => ({
     dices: [],
     activeDelay: false,
     action: null,
+    nowRound: 1,
     round: 3,
   })),
 }))

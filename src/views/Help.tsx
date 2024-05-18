@@ -72,6 +72,13 @@ function Help() {
           {
             state.selected === 1 &&
             <div className='text-dark-100'>
+              <p className='text-sky-400 bg-sky-50 font-bold my-1 px-2 py-1 rounded'>v0.1.2</p>
+              <p>平衡性调整：</p>
+              <p>我们认为先后手可能对战局的影响有些大，因此我们对后手行动进行了增强，现在后手的首次行动将额外获得1次投掷机会。</p>
+              <p>BUG修复：</p>
+              <p>修复了投掷骰子时可能会出现重叠的问题。</p>
+              <p>游戏优化：</p>
+              <p>优化了对局中，点击头像所打开的交流界面的位置，使其更加容易操作。</p>
               <p className='text-sky-400 bg-sky-50 font-bold my-1 px-2 py-1 rounded'>v0.1.1</p>
               <p>平衡性调整：</p>
               <p>我们认为牧师的部分能力过于薄弱，因此我们对其进行了增强。</p>
