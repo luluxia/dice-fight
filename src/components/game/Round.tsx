@@ -335,7 +335,10 @@ function Round() {
         <Button
           color="rose"
           disabled={currentPlayer !== player.id}
-          onClick={() => RPC.call('finishRound', null, RPC.Mode.ALL)}
+          onClick={() => {
+            handleFinishRound()
+            RPC.call('finishRound', null, RPC.Mode.OTHERS)
+          }}
         >
           结束回合
         </Button>

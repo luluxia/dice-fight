@@ -72,6 +72,11 @@ function Help() {
           {
             state.selected === 1 &&
             <div className='text-dark-100'>
+              <p className='text-sky-400 bg-sky-50 font-bold my-1 px-2 py-1 rounded'>v0.1.3</p>
+              <p>功能更新：</p>
+              <p>新增了新手教程，可在单人游戏中进入。</p>
+              <p>BUG修复：</p>
+              <p>修复了快速点击结束回合可能会跳过对方回合的问题。</p>
               <p className='text-sky-400 bg-sky-50 font-bold my-1 px-2 py-1 rounded'>v0.1.2</p>
               <p>平衡性调整：</p>
               <p>我们认为先后手可能对战局的影响有些大，因此我们对后手行动进行了增强，现在后手的首次行动将额外获得1次投掷机会。</p>

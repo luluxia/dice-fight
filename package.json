@@ -13,6 +13,7 @@
     "@tippyjs/react": "^4.2.6",
     "@unocss/reset": "^0.59.3",
     "classnames": "^2.5.1",
+    "driver.js": "^1.3.1",
     "framer-motion": "^11.1.9",
     "pattern.css": "^1.0.0",
     "playroomkit": "^0.0.74",

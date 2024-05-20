@@ -5,6 +5,7 @@ import Index from './views/Index'
 import Room from './views/Room'
 import Prepare from './views/Prepare'
 import Game from './views/Game'
+import Tutorial from './views/Tutorial'
 import Help from './views/Help'
 
 const pages: {
@@ -14,6 +15,7 @@ const pages: {
   room: Room,
   prepare: Prepare,
   game: Game,
+  tutorial: Tutorial,
   help: Help,
 }
 

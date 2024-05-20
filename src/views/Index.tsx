@@ -20,7 +20,7 @@ function Index() {
     }[]
   } = {
     'index': [
-      { text: '单人游戏', color: 'rose', size: 2, action: () => toast.error('暂未开放') },
+      { text: '单人游戏', color: 'rose', size: 2, action: () => setMenu('singleplayer') },
       {
         text: '多人游戏', color: 'orange', size: 2, action: () => {
           if (charList.includes(-1)) {
@@ -33,6 +33,10 @@ function Index() {
       { text: '备战', color: 'lime', size: 2, action: () => changePage('prepare') },
       { text: '设置', color: 'sky', size: 1, action: () => toast.error('暂未开放') },
       { text: '帮助', color: 'sky', size: 1, action: () => changePage('help') },
+    ],
+    'singleplayer': [
+      { text: '新手教程', color: 'rose', size: 2, action: () => changePage('tutorial') },
+      { text: '返回', color: 'sky', size: 2, action: () => setMenu('index') },
     ],
     'multiplayer': [
       { text: '创建房间', color: 'rose', size: 2, action: () => changePage('room') },
@@ -144,7 +148,7 @@ function Index() {
           }
         </motion.div>
       </AnimatePresence>
-      <p className='absolute w-full text-center py-2.5 text-sm text-white bottom-0'>© 2024 陆陆侠. v0.1.2</p>
+      <p className='absolute w-full text-center py-2.5 text-sm text-white bottom-0'>© 2024 陆陆侠. v0.1.3</p>
     </div>
   )
 }
